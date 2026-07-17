@@ -19,10 +19,10 @@ production lending model.
 ## Run locally
 
 ```bash
- npm ci
- npm run lint
- npm test
- npm run build
+npm ci
+npm run lint
+npm test
+npm run build
 ```
 
 The original deterministic Python loop can also be run end to end:
@@ -36,9 +36,10 @@ python3 -m credit_policy.cli evaluate-holdout
 python3 -m credit_policy.cli package
 ```
 
-Remove `--offline` and set `OPENAI_API_KEY` to use the LlamaIndex agents. `LLM_MODEL` defaults to
-`gpt-4o-mini`. Without an API key, agent commands automatically use deterministic local agents so
-the Buildkite demo remains repeatable.
+Set `OPENAI_API_KEY` to use the TypeScript LlamaIndex agents; `LLM_MODEL` defaults to
+`gpt-4.1-mini`. The Python demo defaults to `gpt-4o-mini` when `--offline` is removed. Without an
+API key, both agent implementations automatically use deterministic local fallbacks so the
+Buildkite demo remains repeatable.
 
 ## Agent contract
 
