@@ -1,0 +1,327 @@
+{
+  "iterations": [
+    {
+      "iteration": 1,
+      "policy": {
+        "minCreditScore": 680,
+        "maxDebtToIncomeRatio": 0.42,
+        "minMonthlyCashFlow": 12000,
+        "minBusinessAgeMonths": 24,
+        "minCollateralRatio": 0.25,
+        "allowManualReview": true,
+        "collateralReviewEnabled": false
+      },
+      "passRate": 0.6,
+      "approvalRate": 0.45,
+      "manualReviewRate": 0.05,
+      "defaultRiskEstimate": 0.07,
+      "failedCases": [
+        {
+          "applicant": { "id": "APP-2001", "monthlyRevenue": 42000, "monthlyCashFlow": 18500, "businessAgeMonths": 19, "creditScore": 712, "debtToIncomeRatio": 0.28, "loanAmount": 100000, "collateralValue": 58000, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "young_business", "edgeCase": "Young business with strong cash flow" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Business age 19mo below minimum 24mo"]
+        },
+        {
+          "applicant": { "id": "APP-2002", "monthlyRevenue": 47000, "monthlyCashFlow": 21000, "businessAgeMonths": 21, "creditScore": 698, "debtToIncomeRatio": 0.31, "loanAmount": 120000, "collateralValue": 54000, "industryRisk": "medium", "previousDefaults": 0, "expectedDecision": "approve", "segment": "young_business", "edgeCase": "Young business with strong cash flow" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Business age 21mo below minimum 24mo"]
+        },
+        {
+          "applicant": { "id": "APP-2003", "monthlyRevenue": 39000, "monthlyCashFlow": 24500, "businessAgeMonths": 18, "creditScore": 730, "debtToIncomeRatio": 0.24, "loanAmount": 90000, "collateralValue": 40500, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "young_business", "edgeCase": "Young business with strong cash flow" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Business age 18mo below minimum 24mo"]
+        },
+        {
+          "applicant": { "id": "APP-2004", "monthlyRevenue": 44000, "monthlyCashFlow": 17200, "businessAgeMonths": 22, "creditScore": 705, "debtToIncomeRatio": 0.33, "loanAmount": 110000, "collateralValue": 38500, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "young_business", "edgeCase": "Young business with strong cash flow" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Business age 22mo below minimum 24mo"]
+        },
+        {
+          "applicant": { "id": "APP-2005", "monthlyRevenue": 51000, "monthlyCashFlow": 22800, "businessAgeMonths": 20, "creditScore": 745, "debtToIncomeRatio": 0.26, "loanAmount": 130000, "collateralValue": 52000, "industryRisk": "medium", "previousDefaults": 0, "expectedDecision": "approve", "segment": "young_business", "edgeCase": "Young business with strong cash flow" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Business age 20mo below minimum 24mo"]
+        },
+        {
+          "applicant": { "id": "APP-2101", "monthlyRevenue": 58000, "monthlyCashFlow": 17500, "businessAgeMonths": 48, "creditScore": 765, "debtToIncomeRatio": 0.4, "loanAmount": 140000, "collateralValue": 48000, "industryRisk": "medium", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_dti_risky", "edgeCase": "High credit score borrower carrying a risky debt load" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2102", "monthlyRevenue": 62000, "monthlyCashFlow": 19800, "businessAgeMonths": 54, "creditScore": 778, "debtToIncomeRatio": 0.41, "loanAmount": 160000, "collateralValue": 56000, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_dti_risky", "edgeCase": "High credit score borrower carrying a risky debt load" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2201", "monthlyRevenue": 36000, "monthlyCashFlow": 15200, "businessAgeMonths": 42, "creditScore": 668, "debtToIncomeRatio": 0.3, "loanAmount": 100000, "collateralValue": 66000, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "manual_review", "segment": "collateral_backed", "edgeCase": "Collateral-backed borrower with modest credit" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Credit score 668 below minimum 680"]
+        },
+        {
+          "applicant": { "id": "APP-2202", "monthlyRevenue": 41000, "monthlyCashFlow": 17800, "businessAgeMonths": 36, "creditScore": 672, "debtToIncomeRatio": 0.33, "loanAmount": 120000, "collateralValue": 86400, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "manual_review", "segment": "collateral_backed", "edgeCase": "Collateral-backed borrower with modest credit" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Credit score 672 below minimum 680"]
+        },
+        {
+          "applicant": { "id": "APP-2301", "monthlyRevenue": 33000, "monthlyCashFlow": 10800, "businessAgeMonths": 44, "creditScore": 712, "debtToIncomeRatio": 0.27, "loanAmount": 95000, "collateralValue": 47500, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $10,800 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2302", "monthlyRevenue": 35500, "monthlyCashFlow": 11400, "businessAgeMonths": 38, "creditScore": 725, "debtToIncomeRatio": 0.24, "loanAmount": 105000, "collateralValue": 52500, "industryRisk": "medium", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $11,400 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2303", "monthlyRevenue": 31000, "monthlyCashFlow": 10200, "businessAgeMonths": 51, "creditScore": 705, "debtToIncomeRatio": 0.31, "loanAmount": 90000, "collateralValue": 40500, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $10,200 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2401", "monthlyRevenue": 48000, "monthlyCashFlow": 16500, "businessAgeMonths": 40, "creditScore": 715, "debtToIncomeRatio": 0.34, "loanAmount": 110000, "collateralValue": 38500, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2402", "monthlyRevenue": 40000, "monthlyCashFlow": 14200, "businessAgeMonths": 33, "creditScore": 702, "debtToIncomeRatio": 0.36, "loanAmount": 95000, "collateralValue": 30400, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2403", "monthlyRevenue": 53000, "monthlyCashFlow": 19500, "businessAgeMonths": 58, "creditScore": 735, "debtToIncomeRatio": 0.3, "loanAmount": 130000, "collateralValue": 45500, "industryRisk": "high", "previousDefaults": 2, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2404", "monthlyRevenue": 46000, "monthlyCashFlow": 17800, "businessAgeMonths": 46, "creditScore": 720, "debtToIncomeRatio": 0.33, "loanAmount": 115000, "collateralValue": 40250, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        }
+      ],
+      "agentCritique": "The policy systematically rejects young businesses with strong cash flow. Business age is acting as a proxy for stability, but cash flow already measures that directly. Recommend relaxing the age minimum by 6 months.",
+      "policyChanges": ["Lowered minimum business age from 24 to 18 months"]
+    },
+    {
+      "iteration": 2,
+      "policy": {
+        "minCreditScore": 680,
+        "maxDebtToIncomeRatio": 0.42,
+        "minMonthlyCashFlow": 12000,
+        "minBusinessAgeMonths": 18,
+        "minCollateralRatio": 0.25,
+        "allowManualReview": true,
+        "collateralReviewEnabled": false
+      },
+      "passRate": 0.72,
+      "approvalRate": 0.55,
+      "manualReviewRate": 0.05,
+      "defaultRiskEstimate": 0.07,
+      "failedCases": [
+        {
+          "applicant": { "id": "APP-2101", "monthlyRevenue": 58000, "monthlyCashFlow": 17500, "businessAgeMonths": 48, "creditScore": 765, "debtToIncomeRatio": 0.4, "loanAmount": 140000, "collateralValue": 48000, "industryRisk": "medium", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_dti_risky", "edgeCase": "High credit score borrower carrying a risky debt load" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2102", "monthlyRevenue": 62000, "monthlyCashFlow": 19800, "businessAgeMonths": 54, "creditScore": 778, "debtToIncomeRatio": 0.41, "loanAmount": 160000, "collateralValue": 56000, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_dti_risky", "edgeCase": "High credit score borrower carrying a risky debt load" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2201", "monthlyRevenue": 36000, "monthlyCashFlow": 15200, "businessAgeMonths": 42, "creditScore": 668, "debtToIncomeRatio": 0.3, "loanAmount": 100000, "collateralValue": 66000, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "manual_review", "segment": "collateral_backed", "edgeCase": "Collateral-backed borrower with modest credit" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Credit score 668 below minimum 680"]
+        },
+        {
+          "applicant": { "id": "APP-2202", "monthlyRevenue": 41000, "monthlyCashFlow": 17800, "businessAgeMonths": 36, "creditScore": 672, "debtToIncomeRatio": 0.33, "loanAmount": 120000, "collateralValue": 86400, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "manual_review", "segment": "collateral_backed", "edgeCase": "Collateral-backed borrower with modest credit" },
+          "decision": "reject",
+          "passed": false,
+          "violations": ["Credit score 672 below minimum 680"]
+        },
+        {
+          "applicant": { "id": "APP-2301", "monthlyRevenue": 33000, "monthlyCashFlow": 10800, "businessAgeMonths": 44, "creditScore": 712, "debtToIncomeRatio": 0.27, "loanAmount": 95000, "collateralValue": 47500, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $10,800 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2302", "monthlyRevenue": 35500, "monthlyCashFlow": 11400, "businessAgeMonths": 38, "creditScore": 725, "debtToIncomeRatio": 0.24, "loanAmount": 105000, "collateralValue": 52500, "industryRisk": "medium", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $11,400 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2303", "monthlyRevenue": 31000, "monthlyCashFlow": 10200, "businessAgeMonths": 51, "creditScore": 705, "debtToIncomeRatio": 0.31, "loanAmount": 90000, "collateralValue": 40500, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $10,200 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2401", "monthlyRevenue": 48000, "monthlyCashFlow": 16500, "businessAgeMonths": 40, "creditScore": 715, "debtToIncomeRatio": 0.34, "loanAmount": 110000, "collateralValue": 38500, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2402", "monthlyRevenue": 40000, "monthlyCashFlow": 14200, "businessAgeMonths": 33, "creditScore": 702, "debtToIncomeRatio": 0.36, "loanAmount": 95000, "collateralValue": 30400, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2403", "monthlyRevenue": 53000, "monthlyCashFlow": 19500, "businessAgeMonths": 58, "creditScore": 735, "debtToIncomeRatio": 0.3, "loanAmount": 130000, "collateralValue": 45500, "industryRisk": "high", "previousDefaults": 2, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2404", "monthlyRevenue": 46000, "monthlyCashFlow": 17800, "businessAgeMonths": 46, "creditScore": 720, "debtToIncomeRatio": 0.33, "loanAmount": 115000, "collateralValue": 40250, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        }
+      ],
+      "agentCritique": "Young-business false rejections resolved. Remaining failures split two ways: high-credit borrowers with risky debt loads are being approved on credit score alone, and collateral-backed borrowers with modest credit are being rejected outright even when collateral clears 60% of the loan. Recommend tightening the debt-to-income ceiling and giving strong collateral a manual-review path instead of an automatic rejection.",
+      "policyChanges": ["Tightened max debt-to-income from 0.42 to 0.39", "Enabled manual review for collateral ratio >= 0.6"]
+    },
+    {
+      "iteration": 3,
+      "policy": {
+        "minCreditScore": 680,
+        "maxDebtToIncomeRatio": 0.39,
+        "minMonthlyCashFlow": 12000,
+        "minBusinessAgeMonths": 18,
+        "minCollateralRatio": 0.25,
+        "allowManualReview": true,
+        "collateralReviewEnabled": true
+      },
+      "passRate": 0.83,
+      "approvalRate": 0.5,
+      "manualReviewRate": 0.15,
+      "defaultRiskEstimate": 0.045,
+      "failedCases": [
+        {
+          "applicant": { "id": "APP-2301", "monthlyRevenue": 33000, "monthlyCashFlow": 10800, "businessAgeMonths": 44, "creditScore": 712, "debtToIncomeRatio": 0.27, "loanAmount": 95000, "collateralValue": 47500, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $10,800 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2302", "monthlyRevenue": 35500, "monthlyCashFlow": 11400, "businessAgeMonths": 38, "creditScore": 725, "debtToIncomeRatio": 0.24, "loanAmount": 105000, "collateralValue": 52500, "industryRisk": "medium", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $11,400 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2303", "monthlyRevenue": 31000, "monthlyCashFlow": 10200, "businessAgeMonths": 51, "creditScore": 705, "debtToIncomeRatio": 0.31, "loanAmount": 90000, "collateralValue": 40500, "industryRisk": "low", "previousDefaults": 0, "expectedDecision": "approve", "segment": "seasonal", "edgeCase": "Seasonal business with strong collateral but a cash-flow dip" },
+          "decision": "manual_review",
+          "passed": false,
+          "violations": ["Monthly cash flow $10,200 below minimum $12,000"]
+        },
+        {
+          "applicant": { "id": "APP-2401", "monthlyRevenue": 48000, "monthlyCashFlow": 16500, "businessAgeMonths": 40, "creditScore": 715, "debtToIncomeRatio": 0.34, "loanAmount": 110000, "collateralValue": 38500, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2402", "monthlyRevenue": 40000, "monthlyCashFlow": 14200, "businessAgeMonths": 33, "creditScore": 702, "debtToIncomeRatio": 0.36, "loanAmount": 95000, "collateralValue": 30400, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2403", "monthlyRevenue": 53000, "monthlyCashFlow": 19500, "businessAgeMonths": 58, "creditScore": 735, "debtToIncomeRatio": 0.3, "loanAmount": 130000, "collateralValue": 45500, "industryRisk": "high", "previousDefaults": 2, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2404", "monthlyRevenue": 46000, "monthlyCashFlow": 17800, "businessAgeMonths": 46, "creditScore": 720, "debtToIncomeRatio": 0.33, "loanAmount": 115000, "collateralValue": 40250, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        }
+      ],
+      "agentCritique": "Both fixes worked — no more false approvals on debt-to-income, and collateral-backed borrowers are now routed to manual review instead of rejected outright. The remaining failures are seasonal businesses: strong collateral and credit, but a cash-flow dip below the $12,000 floor during their off-season is triggering manual review when the underlying business is sound. Recommend lowering the cash-flow minimum by $2,000, which the collateral position already covers.",
+      "policyChanges": ["Lowered minimum monthly cash flow from $12,000 to $10,000"]
+    },
+    {
+      "iteration": 4,
+      "policy": {
+        "minCreditScore": 680,
+        "maxDebtToIncomeRatio": 0.39,
+        "minMonthlyCashFlow": 10000,
+        "minBusinessAgeMonths": 18,
+        "minCollateralRatio": 0.25,
+        "allowManualReview": true,
+        "collateralReviewEnabled": true
+      },
+      "passRate": 0.9,
+      "approvalRate": 0.58,
+      "manualReviewRate": 0.08,
+      "defaultRiskEstimate": 0.04,
+      "failedCases": [
+        {
+          "applicant": { "id": "APP-2401", "monthlyRevenue": 48000, "monthlyCashFlow": 16500, "businessAgeMonths": 40, "creditScore": 715, "debtToIncomeRatio": 0.34, "loanAmount": 110000, "collateralValue": 38500, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2402", "monthlyRevenue": 40000, "monthlyCashFlow": 14200, "businessAgeMonths": 33, "creditScore": 702, "debtToIncomeRatio": 0.36, "loanAmount": 95000, "collateralValue": 30400, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2403", "monthlyRevenue": 53000, "monthlyCashFlow": 19500, "businessAgeMonths": 58, "creditScore": 735, "debtToIncomeRatio": 0.3, "loanAmount": 130000, "collateralValue": 45500, "industryRisk": "high", "previousDefaults": 2, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        },
+        {
+          "applicant": { "id": "APP-2404", "monthlyRevenue": 46000, "monthlyCashFlow": 17800, "businessAgeMonths": 46, "creditScore": 720, "debtToIncomeRatio": 0.33, "loanAmount": 115000, "collateralValue": 40250, "industryRisk": "high", "previousDefaults": 1, "expectedDecision": "manual_review", "segment": "high_risk_industry", "edgeCase": "High-risk industry with a prior default masked by clean ratios" },
+          "decision": "approve",
+          "passed": false,
+          "violations": []
+        }
+      ],
+      "agentCritique": "Seasonal cash-flow failures are resolved. The four cases still failing share a pattern no threshold in this policy captures: high-risk industry combined with a prior default, but ratios that otherwise look clean. Tightening any single threshold to catch them would also reject good-faith borrowers in the same range, so I'm not recommending a bounded change — this needs a composite risk signal, which is outside what a threshold policy can express. Pass rate and default risk targets are both met; stopping here.",
+      "policyChanges": []
+    }
+  ],
+  "finalPolicy": {
+    "minCreditScore": 680,
+    "maxDebtToIncomeRatio": 0.39,
+    "minMonthlyCashFlow": 10000,
+    "minBusinessAgeMonths": 18,
+    "minCollateralRatio": 0.25,
+    "allowManualReview": true,
+    "collateralReviewEnabled": true
+  },
+  "finalReport": "## Final Policy Report\n\nStarting policy reached a 60% pass rate against the 40-borrower eval set, with an estimated default risk of 7% among approved loans. Over 4 iterations the loop identified three systematic misjudgments — young businesses rejected on age alone, risky high-debt borrowers approved on credit score alone, and collateral-backed borrowers rejected without a manual-review path — and applied one bounded threshold change per pattern.\n\n**Final pass rate: 90%** (target ≥ 85%)\n**Final default risk estimate: 4%** (target ≤ 5%)\n\n### What changed\n- Minimum business age: 24 → 18 months\n- Maximum debt-to-income: 0.42 → 0.39\n- Minimum monthly cash flow: $12,000 → $10,000\n- Collateral review path: disabled → enabled for collateral ratio ≥ 0.6\n\n### What's still failing\n4 of 40 cases (10%) remain unresolved. All four share high industry risk combined with a prior default, but pass every quantitative threshold in the policy. No bounded threshold change could catch these without also rejecting comparable good-faith borrowers — flagged for follow-up as a candidate for a composite risk signal rather than a single-field threshold.\n\nUnderwriteLoop does not approve these borrowers, or any borrower. It stress-tests the policy that will.",
+  "nexlaDataStatus": {
+    "source": "Nexla",
+    "schemaStatus": "Normalized",
+    "recordsProcessed": 40
+  }
+}
