@@ -1,0 +1,83 @@
+env:
+  MAX_DEFAULT_RATE: "0.04"
+  MAX_ITERATIONS: "8"
+  MIN_CASE_PASS_RATE: "0.98"
+  MAX_MANUAL_REVIEW_RATE: "0.20"
+
+steps:
+  - label: ":mag: Validate synthetic data"
+    key: "validate"
+    commands:
+      - "python -m pip install -e ."
+      - "python -m credit_policy.cli validate"
+    artifact_paths:
+      - "artifacts/calibration.json"
+      - "artifacts/holdout.json"
+      - "artifacts/data_report.json"
+
+  - label: ":test_tube: Generate adversarial cases"
+    key: "generate-cases"
+    depends_on: "validate"
+    commands:
+      - "python -m pip install -e ."
+      - "python -m credit_policy.cli generate-cases"
+    artifact_paths:
+      - "artifacts/cases.json"
+      - "artifacts/case_generation_trace.json"
+
+  - label: ":llama: Generate and refine policy"
+    key: "policy-loop"
+    depends_on:
+      - "validate"
+      - "generate-cases"
+    commands:
+      - "python -m pip install -e ."
+      - "buildkite-agent artifact download artifacts/calibration.json . --step validate"
+      - "buildkite-agent artifact download artifacts/cases.json . --step generate-cases"
+      - "python -m credit_policy.cli optimize"
+    timeout_in_minutes: 20
+    retry:
+      automatic:
+        - exit_status: 75
+          limit: 2
+    artifact_paths:
+      - "artifacts/iterations/**/*"
+      - "artifacts/best_policy.json"
+      - "artifacts/optimization_summary.json"
+      - "artifacts/agent_trace.jsonl"
+
+  - label: ":lock: Holdout and governance evaluation"
+    key: "holdout"
+    depends_on:
+      - "validate"
+      - "generate-cases"
+      - "policy-loop"
+    commands:
+      - "python -m pip install -e ."
+      - "buildkite-agent artifact download artifacts/holdout.json . --step validate"
+      - "buildkite-agent artifact download artifacts/cases.json . --step generate-cases"
+      - "buildkite-agent artifact download artifacts/best_policy.json . --step policy-loop"
+      - "python -m credit_policy.cli evaluate-holdout"
+    artifact_paths:
+      - "artifacts/holdout_metrics.json"
+      - "artifacts/governance_report.json"
+      - "artifacts/model_card.md"
+
+  - block: ":eyes: Approve candidate policy"
+    key: "approval"
+    depends_on: "holdout"
+    prompt: "Review holdout metrics, governance report, model card, and iteration trace."
+
+  - label: ":package: Package approved policy"
+    key: "package"
+    depends_on:
+      - "approval"
+      - "policy-loop"
+      - "holdout"
+    commands:
+      - "python -m pip install -e ."
+      - "buildkite-agent artifact download artifacts/best_policy.json . --step policy-loop"
+      - "buildkite-agent artifact download artifacts/model_card.md . --step holdout"
+      - "python -m credit_policy.cli package"
+    artifact_paths:
+      - "dist/**/*"

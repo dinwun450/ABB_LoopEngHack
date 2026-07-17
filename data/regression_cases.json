@@ -1,0 +1,92 @@
+[
+  {
+    "case_id": "clear-approve",
+    "profile": "High credit score, low DTI, stable job",
+    "rationale": "All major risk indicators are strong.",
+    "applicant": {
+      "applicant_id": "case-clear-approve",
+      "credit_score": 780,
+      "debt_to_income": 0.22,
+      "employment_years": 7,
+      "annual_income": 120000,
+      "loan_amount": 24000,
+      "has_credit_history": true,
+      "self_employed": false,
+      "outcome": null
+    },
+    "expected": "approve",
+    "source": "regression"
+  },
+  {
+    "case_id": "clear-reject",
+    "profile": "Low credit score and prior default risk",
+    "rationale": "A very low credit score is outside policy appetite.",
+    "applicant": {
+      "applicant_id": "case-clear-reject",
+      "credit_score": 540,
+      "debt_to_income": 0.58,
+      "employment_years": 0.5,
+      "annual_income": 42000,
+      "loan_amount": 19000,
+      "has_credit_history": true,
+      "self_employed": false,
+      "outcome": null
+    },
+    "expected": "reject",
+    "source": "regression"
+  },
+  {
+    "case_id": "edge-thin-file",
+    "profile": "High income, no credit history",
+    "rationale": "Missing credit history needs review and must not cause automatic rejection.",
+    "applicant": {
+      "applicant_id": "case-thin-file",
+      "credit_score": null,
+      "debt_to_income": 0.2,
+      "employment_years": 6,
+      "annual_income": 145000,
+      "loan_amount": 26000,
+      "has_credit_history": false,
+      "self_employed": false,
+      "outcome": null
+    },
+    "expected": "manual_review",
+    "source": "regression"
+  },
+  {
+    "case_id": "edge-self-employed",
+    "profile": "Strong income with volatile employment history",
+    "rationale": "Strong income conflicts with limited employment stability.",
+    "applicant": {
+      "applicant_id": "case-self-employed",
+      "credit_score": 710,
+      "debt_to_income": 0.28,
+      "employment_years": 0.4,
+      "annual_income": 135000,
+      "loan_amount": 30000,
+      "has_credit_history": true,
+      "self_employed": true,
+      "outcome": null
+    },
+    "expected": "manual_review",
+    "source": "regression"
+  },
+  {
+    "case_id": "adversarial-naive-dti",
+    "profile": "Excellent score just above a naive DTI threshold",
+    "rationale": "A single DTI threshold should not override excellent credit and stability.",
+    "applicant": {
+      "applicant_id": "case-adversarial-dti",
+      "credit_score": 770,
+      "debt_to_income": 0.51,
+      "employment_years": 5,
+      "annual_income": 110000,
+      "loan_amount": 28000,
+      "has_credit_history": true,
+      "self_employed": false,
+      "outcome": null
+    },
+    "expected": "approve",
+    "source": "regression"
+  }
+]
