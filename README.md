@@ -1,19 +1,31 @@
-# Credit Policy Agent Loop
+# UnderwriteLoop
 
-A runnable Buildkite and LlamaIndex demonstration for this constrained optimization problem:
+UnderwriteLoop is agentic QA for small-business loan approval policies. It does not approve or
+reject real borrowers. It stress-tests candidate policies before deployment using deterministic
+evaluation and advisory LlamaIndex agents.
+
+The implementation demonstrates this constrained optimization problem:
 
 > Keep the default rate among approved applicants below X% while approving as many creditworthy
 > applicants as possible.
 
-LlamaIndex `FunctionAgent`s generate test cases and policy candidates. A deterministic evaluator
-executes a restricted JSON rule DSL, calculates risk and approval metrics, and returns concrete
-misses to the policy agent. Buildkite keeps the holdout evaluation outside the optimization loop
-and requires human approval before packaging a candidate.
+The TypeScript agent layer uses LlamaIndex workflows to critique deterministic failures and produce
+an internal final report. If no LLM key is configured, the same contract returns templated,
+repeatable explanations. Agents never score applicants or apply policy changes.
 
 This project uses fully observed synthetic outcomes. It is a loop-engineering demonstration, not a
 production lending model.
 
 ## Run locally
+
+```bash
+ npm ci
+ npm run lint
+ npm test
+ npm run build
+```
+
+The original deterministic Python loop can also be run end to end:
 
 ```bash
 python3 -m pip install -e '.[dev]'
@@ -27,6 +39,31 @@ python3 -m credit_policy.cli package
 Remove `--offline` and set `OPENAI_API_KEY` to use the LlamaIndex agents. `LLM_MODEL` defaults to
 `gpt-4o-mini`. Without an API key, agent commands automatically use deterministic local agents so
 the Buildkite demo remains repeatable.
+
+## Agent contract
+
+`lib/agent.ts` exposes:
+
+- `analyzeFailures()` — groups deterministic misses, explains patterns, and suggests no more than
+  four bounded policy changes.
+- `generateFinalReport()` — summarizes iteration history for an internal risk reviewer.
+- `templateCritique()` — a no-API fallback used for repeatable demos and CI.
+
+The starting small-business policy and deterministic TypeScript evaluator live in
+`lib/evaluator.ts`. Suggestions are advisory. A loop engine must validate allowlisted changes,
+apply its own bounds, rerun all cases, and stop at five iterations or once pass rate is at least 85%
+and estimated default risk is at most 5%.
+
+## Buildkite
+
+`.buildkite/pipeline.yml` runs four gated stages on every change:
+
+1. Reproducible installation with `npm ci`.
+2. TypeScript linting.
+3. Deterministic evaluator and fallback-agent tests, plus the Python engine tests.
+4. TypeScript build validation.
+
+No LLM credential is required in CI, and CI never calls an agent to decide whether a policy passes.
 
 The primary controls are:
 
