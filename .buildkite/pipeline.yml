@@ -1,0 +1,33 @@
+steps:
+  - label: ":package: Install"
+    key: "install"
+    command: "npm ci"
+    timeout_in_minutes: 10
+
+  - label: ":eslint: Lint"
+    key: "lint"
+    depends_on: "install"
+    commands:
+      - "npm ci"
+      - "npm run lint"
+    timeout_in_minutes: 10
+
+  - label: ":test_tube: Test evaluator and agents"
+    key: "test"
+    depends_on: "install"
+    commands:
+      - "npm ci"
+      - "npm test"
+      - "python3 -m pip install -e '.[dev]'"
+      - "python3 -m pytest"
+    timeout_in_minutes: 15
+
+  - label: ":typescript: Build"
+    key: "build"
+    depends_on:
+      - "lint"
+      - "test"
+    commands:
+      - "npm ci"
+      - "npm run build"
+    timeout_in_minutes: 10
