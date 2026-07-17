@@ -1,0 +1,382 @@
+UnderwriteLoop Hackathon Execution Plan
+1. Product Summary
+UnderwriteLoop is an agentic eval platform for loan approval policies.
+It does not directly approve or reject real borrowers. Instead, it helps lending teams test and improve underwriting policies before deployment.
+The system takes cleaned borrower/application data, runs policy evals, finds failures, uses agents to critique the policy, revises the policy, and loops until the policy meets risk and quality thresholds.
+2. One-Line Pitch
+UnderwriteLoop helps lending teams stress-test and improve loan approval policies using agentic eval loops powered by trusted data.
+3. Core Demo
+A judge opens the dashboard and clicks Run Eval Loop.
+The app shows:
+Borrower data loaded from a Nexla-prepared dataset.
+A starting small business loan policy.
+Generated edge-case evals.
+Policy failures.
+Agent critique.
+Policy revisions.
+Pass rate improving across iterations.
+Final recommended policy and report.
+4. Sponsored Tool Usage
+Nexla
+Use Nexla as the trusted data layer.
+Role:
+Raw loan data → Nexla normalization → agent-ready borrower dataset → UnderwriteLoop eval loop
+What we show:
+Data source: Nexla
+Schema status: Normalized
+Records processed: 40
+Use: Feeding borrower profiles into policy evals
+Pitch:
+Loan data is messy and spread across CRMs, spreadsheets, banking systems, and risk tools. Nexla turns that fragmented data into clean, governed, agent-ready borrower records that our eval loop can trust.
+Next.js
+Use Next.js for the product dashboard.
+Role:
+Interactive underwriting eval dashboard
+API route for running loop engine
+Buildkite
+Use Buildkite for CI.
+Role:
+Every change runs install, lint, test, and build.
+Pitch:
+Since underwriting policy QA is high-stakes, every version of the eval engine should be tested before deployment.
+Pomerium
+Use Pomerium for secure access.
+Role:
+Protect the internal underwriting eval dashboard.
+Pitch:
+Loan policy evals and borrower records are sensitive. Pomerium secures access so only approved internal reviewers can inspect policy failures and recommendations.
+5. MVP Scope
+Loan type:
+Small business loan approval
+Use synthetic or Nexla-prepared sample data.
+Borrower fields:
+monthlyRevenue
+monthlyCashFlow
+businessAgeMonths
+creditScore
+debtToIncomeRatio
+loanAmount
+collateralValue
+industryRisk
+previousDefaults
+expectedDecision
+segment
+edgeCase
+Policy output:
+approve
+reject
+manual_review
+6. Core Product Flow
+Nexla-prepared borrower data
+        ↓
+Starting underwriting policy
+        ↓
+Run eval loop
+        ↓
+Evaluate each borrower
+        ↓
+Find failed cases
+        ↓
+Agent analyzes failures
+        ↓
+Policy revision engine updates thresholds
+        ↓
+Retest
+        ↓
+Final policy report
+7. Architecture
+Next.js Dashboard
+        ↓
+/api/run-loop
+        ↓
+Loop Engine
+        ↓
+Policy Evaluator
+        ↓
+Failure Analyzer
+        ↓
+Agent Critic / Explainer
+        ↓
+Policy Revision Engine
+        ↓
+Iteration History
+        ↓
+Dashboard Visualization
+8. Repository Structure
+/app
+  page.tsx
+
+/app/api/run-loop
+  route.ts
+
+/components
+  PolicyCard.tsx
+  EvalSummary.tsx
+  IterationTimeline.tsx
+  PassRateChart.tsx
+  FailedCasesTable.tsx
+  FinalReport.tsx
+  NexlaDataCard.tsx
+
+/lib
+  dataset.ts
+  policy.ts
+  evaluator.ts
+  loop-engine.ts
+  agent.ts
+  report.ts
+  types.ts
+
+/buildkite
+  pipeline.yml
+
+README.md
+9. Main Data Types
+Applicant:
+type Applicant = {
+  id: string;
+  monthlyRevenue: number;
+  monthlyCashFlow: number;
+  businessAgeMonths: number;
+  creditScore: number;
+  debtToIncomeRatio: number;
+  loanAmount: number;
+  collateralValue: number;
+  industryRisk: "low" | "medium" | "high";
+  previousDefaults: number;
+  expectedDecision: "approve" | "reject" | "manual_review";
+  segment: string;
+  edgeCase: string;
+};
+Policy:
+type Policy = {
+  minCreditScore: number;
+  maxDebtToIncomeRatio: number;
+  minMonthlyCashFlow: number;
+  minBusinessAgeMonths: number;
+  minCollateralRatio: number;
+  allowManualReview: boolean;
+};
+Iteration:
+type Iteration = {
+  iteration: number;
+  policy: Policy;
+  passRate: number;
+  approvalRate: number;
+  manualReviewRate: number;
+  defaultRiskEstimate: number;
+  failedCases: EvalResult[];
+  agentCritique: string;
+  policyChanges: string[];
+};
+10. Evaluation Metrics
+Track:
+Pass rate
+Approval rate
+Manual review rate
+False approvals
+False rejections
+Estimated default risk
+Edge-case pass rate
+Policy improvement per iteration
+Target success condition:
+Pass rate >= 85%
+Estimated default risk <= 5%
+Max iterations <= 5
+11. Starting Policy
+Use an intentionally imperfect policy:
+{
+  "minCreditScore": 680,
+  "maxDebtToIncomeRatio": 0.42,
+  "minMonthlyCashFlow": 12000,
+  "minBusinessAgeMonths": 24,
+  "minCollateralRatio": 0.25,
+  "allowManualReview": true
+}
+This should create visible failures, especially for:
+Young business with strong cash flow
+Collateral-backed borrower with slightly lower credit
+High credit borrower with risky debt
+Older business with declining cash flow
+Seasonal business
+12. Loop Engineering Logic
+The loop:
+1. Evaluate current policy.
+2. Collect failed cases.
+3. Group failures by pattern.
+4. Agent explains the pattern.
+5. Revision engine applies bounded changes.
+6. Retest.
+7. Stop when thresholds pass or max iterations reached.
+Bounded policy updates:
+If safe young businesses are rejected:
+lower minBusinessAgeMonths by 6 months.
+
+If risky borrowers are approved:
+increase minCreditScore by 10 or reduce maxDebtToIncomeRatio by 0.03.
+
+If collateral-backed borrowers are rejected:
+add manual review rule for collateralRatio >= 0.6.
+
+If too many manual reviews:
+tighten clear approval/rejection thresholds.
+
+If default risk is too high:
+tighten debt ratio and cash flow requirements.
+13. Agent Layer
+Use agents for critique and explanation, not final scoring.
+Agent responsibilities:
+Analyze failed cases
+Explain why the policy failed
+Suggest safe policy changes
+Generate final report
+Important rule:
+The evaluator is deterministic. The agent recommends and explains.
+Fallback:
+If no LLM API is ready, use templated agent explanations.
+14. UI Requirements
+Dashboard sections:
+Header: UnderwriteLoop
+Nexla Data Card
+Business Goal
+Current / Final Policy
+Run Eval Loop button
+Pass Rate Chart
+Default Risk Chart
+Iteration Timeline
+Policy Changes
+Failed Cases Table
+Agent Critique
+Final Report
+Most important visual:
+Pass rate increasing over iterations
+Second most important visual:
+Failed cases decreasing over iterations
+15. Buildkite Pipeline
+Create:
+.buildkite/pipeline.yml
+Pipeline:
+steps:
+  - label: "Install"
+    command: "npm install"
+
+  - label: "Lint"
+    command: "npm run lint"
+
+  - label: "Test"
+    command: "npm test"
+
+  - label: "Build"
+    command: "npm run build"
+Add at least one test for evaluator behavior.
+16. Pomerium Plan
+Minimum implementation:
+Add Pomerium config example
+Protect dashboard route in deployed environment if possible
+Add Pomerium explanation to README and architecture
+Product story:
+Underwriting policy evals are internal and sensitive. Pomerium protects the dashboard so only authorized risk reviewers can access borrower evals and policy recommendations.
+17. 4-Hour Execution Timeline
+0:00-0:30 — Setup
+Create app:
+npx create-next-app@latest underwrite-loop
+Choose:
+TypeScript
+Tailwind
+App Router
+ESLint
+Install chart library:
+npm install recharts
+Create repo structure.
+Add initial README.
+0:30-1:15 — Core Engine
+Build:
+/lib/types.ts
+/lib/dataset.ts
+/lib/policy.ts
+/lib/evaluator.ts
+/lib/loop-engine.ts
+Make runLoop() return 3-5 iterations with improving metrics.
+1:15-2:00 — API + Agent Layer
+Build:
+/app/api/run-loop/route.ts
+/lib/agent.ts
+/lib/report.ts
+Agent can be real LLM or templated.
+API returns:
+{
+  "iterations": [],
+  "finalPolicy": {},
+  "finalReport": "",
+  "nexlaDataStatus": {}
+}
+2:00-2:45 — Dashboard
+Build:
+NexlaDataCard
+PolicyCard
+PassRateChart
+IterationTimeline
+FailedCasesTable
+FinalReport
+One button calls /api/run-loop.
+2:45-3:20 — Sponsored Tool Integration
+Add:
+Buildkite pipeline
+Basic evaluator test
+Pomerium config/example
+Nexla data card and README explanation
+3:20-4:00 — Polish + Pitch
+Freeze features.
+Polish:
+UI spacing
+Demo data
+Final report copy
+README
+Architecture diagram
+Pitch script
+Screenshots if needed
+18. Demo Script
+Say:
+Loan approval policies often fail on edge cases. A policy may reject safe young businesses, approve high-debt borrowers, or create too many manual reviews.
+
+UnderwriteLoop uses Nexla-prepared borrower data and agentic eval loops to test underwriting policies before deployment.
+
+The evaluator deterministically scores the policy. The agent analyzes failures, suggests bounded changes, and the loop retests until the policy reaches the target risk and pass-rate threshold.
+Then demo:
+1. Show Nexla data card.
+2. Show starting policy.
+3. Click Run Eval Loop.
+4. Show Iteration 1 failures.
+5. Show agent critique.
+6. Show policy changes.
+7. Show pass rate improving.
+8. Show final policy report.
+9. Mention Buildkite and Pomerium.
+19. What Not To Build
+Skip:
+Real borrower PII
+Real bank integrations
+Full authentication system
+Database
+Complex LangGraph orchestration
+Large file uploads
+Perfect compliance modeling
+20. Success Criteria
+By the end, we need:
+Working Next.js dashboard
+Nexla data story/card
+Synthetic loan dataset
+Policy eval loop
+Agent critique/explanation
+Pass-rate chart
+Failed cases table
+Final policy report
+Buildkite pipeline
+Pomerium security story/config
+README and pitch
+21. Final Product Positioning
+UnderwriteLoop is:
+Agentic QA for loan approval policies.
+It is not:
+An autonomous AI loan approver.
+This distinction makes the project safer, clearer, and more enterprise-ready.
