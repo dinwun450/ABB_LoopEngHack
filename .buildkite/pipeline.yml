@@ -8,8 +8,8 @@ steps:
   - label: ":mag: Validate synthetic data"
     key: "validate"
     commands:
-      - "python -m pip install -e ."
-      - "python -m credit_policy.cli validate"
+      - "python3 -m pip install -e ."
+      - "python3 -m credit_policy.cli validate"
     artifact_paths:
       - "artifacts/calibration.json"
       - "artifacts/holdout.json"
@@ -19,8 +19,8 @@ steps:
     key: "generate-cases"
     depends_on: "validate"
     commands:
-      - "python -m pip install -e ."
-      - "python -m credit_policy.cli generate-cases"
+      - "python3 -m pip install -e ."
+      - "python3 -m credit_policy.cli generate-cases"
     artifact_paths:
       - "artifacts/cases.json"
       - "artifacts/case_generation_trace.json"
@@ -31,10 +31,10 @@ steps:
       - "validate"
       - "generate-cases"
     commands:
-      - "python -m pip install -e ."
+      - "python3 -m pip install -e ."
       - "buildkite-agent artifact download artifacts/calibration.json . --step validate"
       - "buildkite-agent artifact download artifacts/cases.json . --step generate-cases"
-      - "python -m credit_policy.cli optimize"
+      - "python3 -m credit_policy.cli optimize"
     timeout_in_minutes: 20
     retry:
       automatic:
@@ -53,11 +53,11 @@ steps:
       - "generate-cases"
       - "policy-loop"
     commands:
-      - "python -m pip install -e ."
+      - "python3 -m pip install -e ."
       - "buildkite-agent artifact download artifacts/holdout.json . --step validate"
       - "buildkite-agent artifact download artifacts/cases.json . --step generate-cases"
       - "buildkite-agent artifact download artifacts/best_policy.json . --step policy-loop"
-      - "python -m credit_policy.cli evaluate-holdout"
+      - "python3 -m credit_policy.cli evaluate-holdout"
     artifact_paths:
       - "artifacts/holdout_metrics.json"
       - "artifacts/governance_report.json"
@@ -75,9 +75,9 @@ steps:
       - "policy-loop"
       - "holdout"
     commands:
-      - "python -m pip install -e ."
+      - "python3 -m pip install -e ."
       - "buildkite-agent artifact download artifacts/best_policy.json . --step policy-loop"
       - "buildkite-agent artifact download artifacts/model_card.md . --step holdout"
-      - "python -m credit_policy.cli package"
+      - "python3 -m credit_policy.cli package"
     artifact_paths:
       - "dist/**/*"

@@ -16,12 +16,12 @@ production lending model.
 ## Run locally
 
 ```bash
-python -m pip install -e '.[dev]'
-python -m credit_policy.cli validate
-python -m credit_policy.cli generate-cases --offline
-python -m credit_policy.cli optimize --offline
-python -m credit_policy.cli evaluate-holdout
-python -m credit_policy.cli package
+python3 -m pip install -e '.[dev]'
+python3 -m credit_policy.cli validate
+python3 -m credit_policy.cli generate-cases --offline
+python3 -m credit_policy.cli optimize --offline
+python3 -m credit_policy.cli evaluate-holdout
+python3 -m credit_policy.cli package
 ```
 
 Remove `--offline` and set `OPENAI_API_KEY` to use the LlamaIndex agents. `LLM_MODEL` defaults to

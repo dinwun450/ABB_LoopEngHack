@@ -17,4 +17,4 @@ def test_final_offline_policy_handles_regressions() -> None:
 
     assert metrics.case_pass_rate == 1
     assert metrics.approved_count > 0
-    assert metrics.policy_complexity == 11
+    assert metrics.policy_complexity == 14

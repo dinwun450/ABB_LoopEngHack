@@ -73,7 +73,8 @@ class PolicyAgent:
                 "Return only a Policy JSON object. Policies are ordered rules in a restricted DSL. "
                 "Allowed fields: credit_score, debt_to_income, employment_years, annual_income, "
                 "loan_amount, has_credit_history, self_employed. Allowed operators: lt, lte, gt, "
-                "gte, eq, neq. Never add demographic or proxy attributes. Optimize lexicographically: "
+                "gte, eq, neq. Never add demographic or proxy attributes. Optimize "
+                "lexicographically: "
                 "pass tests, satisfy risk and manual-review caps, then maximize safe approvals."
             ),
             llm=OpenAI(model=self.model, temperature=0.1),
@@ -218,11 +219,13 @@ def _offline_policy(iteration: int) -> Policy:
         },
         {
             "version": 3,
-            "rationale": "Expands safe approvals while reserving thin and unstable files for review.",
+            "rationale": (
+                "Expands safe approvals while reserving thin and unstable files for review."
+            ),
             "rules": [
                 {
                     "name": "reject-low-score",
-                    "all": [{"field": "credit_score", "op": "lt", "value": 640}],
+                    "all": [{"field": "credit_score", "op": "lt", "value": 660}],
                     "decision": "reject",
                 },
                 {
@@ -230,6 +233,14 @@ def _offline_policy(iteration: int) -> Policy:
                     "all": [
                         {"field": "debt_to_income", "op": "gt", "value": 0.52},
                         {"field": "credit_score", "op": "lt", "value": 700},
+                    ],
+                    "decision": "reject",
+                },
+                {
+                    "name": "reject-borderline-new-employment",
+                    "all": [
+                        {"field": "employment_years", "op": "lt", "value": 1},
+                        {"field": "credit_score", "op": "lt", "value": 680},
                     ],
                     "decision": "reject",
                 },
