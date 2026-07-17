@@ -247,8 +247,8 @@ def _offline_policy(iteration: int) -> Policy:
                 {
                     "name": "approve-excellent-credit-exception",
                     "all": [
-                        {"field": "credit_score", "op": "gte", "value": 740},
-                        {"field": "debt_to_income", "op": "lte", "value": 0.55},
+                        {"field": "credit_score", "op": "gte", "value": 720},
+                        {"field": "debt_to_income", "op": "lte", "value": 0.65},
                         {"field": "employment_years", "op": "gte", "value": 2},
                     ],
                     "decision": "approve",
